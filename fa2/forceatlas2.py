@@ -80,7 +80,7 @@ class ForceAtlas2:
         self.strongGravityMode = strongGravityMode
         self.gravity = gravity
         self.verbose = verbose
-        self.np_random = numpy.random if seed is None else numpy.random.RandomState(seed)
+        self.np_random = numpy.random if seed is None else numpy.random.default_rng(seed)
 
     def init(self,
              G,  # a graph in 2D numpy ndarray format (or) scipy sparse matrix format
