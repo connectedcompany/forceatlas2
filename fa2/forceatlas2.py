@@ -63,6 +63,9 @@ class ForceAtlas2:
                  strongGravityMode=False,
                  gravity=1.0,
 
+                 # Random seed
+                 seed=None,
+
                  # Log
                  verbose=True):
         assert linLogMode == adjustSizes == multiThreaded == False, "You selected a feature that has not been implemented yet..."
@@ -77,6 +80,7 @@ class ForceAtlas2:
         self.strongGravityMode = strongGravityMode
         self.gravity = gravity
         self.verbose = verbose
+        self.np_random = numpy.random if seed is None else numpy.random.default_rng(seed)
 
     def init(self,
              G,  # a graph in 2D numpy ndarray format (or) scipy sparse matrix format
@@ -110,8 +114,8 @@ class ForceAtlas2:
             n.dx = 0
             n.dy = 0
             if pos is None:
-                n.x = random.random()
-                n.y = random.random()
+                n.x = self.np_random.random()
+                n.y = self.np_random.random()
             else:
                 n.x = pos[i][0]
                 n.y = pos[i][1]
@@ -258,8 +262,8 @@ class ForceAtlas2:
     # This function returns an igraph layout
     def forceatlas2_igraph_layout(self, G, pos=None, iterations=100, weight_attr=None):
 
-        from scipy.sparse import csr_matrix
         import igraph
+        from scipy.sparse import csr_matrix
 
         def to_sparse(graph, weight_attr=None):
             edges = graph.get_edgelist()
